@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+            管理员
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id="check"><a>进入后台</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;" style="background-color:grey;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html" style="background-color:grey;">注册登记</a></dd>
+              <dd><a href="../page/query.html">信息查询</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div class="layui-input-block"
+        style="margin-right: 25px;margin-left: 65px;margin-top: 30px;color: white;text-align: center;">
+        <h2 style="font-size: 30px;">服刑人员登记注册</h2>
+      </div>
+      <div
+        style="margin-top: 20px;margin-left: 32%;padding: 20px;width: 400px;height: 450px;;border-radius: 4px;box-shadow: 5px 5px 20px #444444"">
+    <form class=" layui-form" action="../Code/register.php" method="post" lay-filter="example" name="register">
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">ID</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="id" name="id" lay-verify="id" autocomplete="off" placeholder="注册年月日+随机数字（不需要填）"
+              class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">姓名</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="name" name="name" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">性别</label>
+          <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="radio" name="sex" value="男" title="男" checked="">
+            <input type="radio" name="sex" value="女" title="女">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">年龄</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="age" name="age" placeholder="请输入年龄" autocomplete="off" class="layui-input" lay-verify="age">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">罪名</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="kind" name="kind" placeholder="请输入犯罪种类" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">刑罚年限</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="prison" name="prison" placeholder="请输入坐牢年限" autocomplete="off" class="layui-input"
+              lay-verify="prison">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">入狱时间</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="cometime" name="cometime" id="date1" autocomplete="off" class="layui-input" lay-verify="time1">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">允许劳动</label>
+          <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="checkbox" name="allow" lay-skin="switch" lay-text="是|否">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-getval">确认信息</button>
+            <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">立即注册</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;">
+      <!-- 底部固定区域 -->
+      Copy Right @xincl7@163.com
+    </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'layedit', 'laydate'], function () {
+      var element = layui.element;
+      var form = layui.form
+        , layer = layui.layer
+        , layedit = layui.layedit
+        , laydate = layui.laydate;
+      form.render();
+
+      laydate.render({
+        elem: '#date1'
+      });
+
+      //表单取值
+      layui.$('#LAY-component-form-getval').on('click', function () {
+        var data = form.val('example');
+        layer.msg(JSON.stringify(data));
+      });
+
+      Date.prototype.Format = function (fmt) { // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+      }
+      //提交数据
+      form.on('submit(demo1)', function (data) {
+        console.log(JSON.stringify(data.field));
+        // layer.alert(JSON.stringify(data.field), {
+        //   title: '最终的提交信息'
+        // })
+        var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+        console.log(time);
+        $.ajax({
+          method: "POST",
+          url: "../Code/register1.php",
+          data: {
+            d: JSON.stringify(data.field),
+            time: time
+
+          },
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == 1) {
+              layer.msg(obj.message, { icon: 2 });
+            } else if (obj.code == 2) {
+              layer.msg(obj.message, { icon: 2 });
+            } else if (obj.code == 3) {
+              layer.msg(obj.message, { icon: 1 });
+            }
+          },
+          error: function (msg) {
+            alert(msg);
+          }
+        })
+        return false;
+      });
+      //退出设置
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      })
+
+
+
+      //自定义验证规则
+      form.verify({
+        id: function (value) {
+          if (value.length > 8) {
+            return 'ID长度不得大于8';
+          }
+        }
+        , age: [
+          /^100$|^(\d|[1-9]\d)$/
+          , '年龄小于一百，并且不能有小数'
+        ]
+        , prison: [
+          /^50$|^(\d|[1-9]\d)$/
+          , '刑罚年限大于零，小于五十年'
+        ]
+        , time1: function (value) {
+          if (value.length == 0) {
+            return '请输入入狱时间'
+          }
+        }
+      });
+
+      //设置监听进入后台
+      $('#check').on('click', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == '3') {
+              window.location.href = '../page/backstage.html';
+            } else if (obj.code == '2') {
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+    });
+  </script>
+</body>
+
+</html>

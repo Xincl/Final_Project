@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+  <script>
+    window.onload = function () {
+      var oBtn1 = document.getElementById("btn1");
+      var oT1 = document.getElementById("t1");
+      var oBtn2 = document.getElementById("btn2");
+      oBtn1.onclick = function () {
+        $.ajax({
+          method: "get",
+          url: "../Code/showPrisoner.php",
+          success: function (result) {
+            console.log(typeof result);
+            var arr = JSON.parse(result);
+            var str = ``;
+            for (var i = 0; i < arr.length; i++) {
+              str += `<tr>
+                            <td>${arr[i].FID}</td> 
+                            <td>${arr[i].FName}</td> 
+                            <td>${arr[i].FSex}</td> 
+                            <td>${arr[i].FAge}</td> 
+                            <td>${arr[i].FComeTime}</td> 
+                            <td>${arr[i].FPrison}</td>  
+                            <td>${arr[i].FKind}</td>    
+                        </tr>`;
+            }
+            oT1.innerHTML = str;
+          },
+          error: function (msg) {
+            alert(msg);
+          }
+        })
+      }
+      oBtn2.onclick = function () {
+        var search = document.getElementById("search").value;
+        console.log(search);
+        $.ajax({
+          method: "POST",
+          url: "../Code/showPrisonerS.php",
+          data: { "search": search },
+          success: function (result) {
+            console.log(typeof result);
+            var arr = JSON.parse(result);
+            var str = ``;
+            for (var i = 0; i < arr.length; i++) {
+              str += `<tr>
+                            <td>${arr[i].FID}</td> 
+                            <td>${arr[i].FName}</td> 
+                            <td>${arr[i].FSex}</td> 
+                            <td>${arr[i].FAge}</td> 
+                            <td>${arr[i].FComeTime}</td> 
+                            <td>${arr[i].FPrison}</td>  
+                            <td>${arr[i].FKind}</td>    
+                        </tr>`;
+            }
+            oT1.innerHTML = str;
+          },
+          error: function (msg) {
+            alert(msg);
+          }
+        })
+      }
+    }</script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">管理员
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id="check"><a>进入后台</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;" style="background-color:grey;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html">注册登记</a></dd>
+              <dd><a href="../page/query.html" style="background-color:grey;">信息查询</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div class="layui-col-md12">
+        <div class="layui-card" style="background: rgba(0,0,0,0);margin-left:80px;margin-right: 100px;">
+          <div class="layui-card-header" style="font-size:24px;text-align: center;margin-top: 50px;color: white;">
+            服刑人员信息查询</div>
+          <div class="layui-card-body"">
+            <div class=" layui-input-block" style="margin-right: 25px;margin-left: 40px;">
+
+            <div class="layui-input-block" style="position: absolute;left: -80px;top:0px">
+              <input id="btn1" type="submit" value="显示数据" class="layui-btn"
+                style="width: 100px;text-align: center;background-color: rgba(118, 188, 209,0.4)">
+            </div>
+            <div class="layui-input-block">
+              <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on"
+                class="layui-input" style="margin-left: 35px;width: 600px;background-color: rgba(248, 234, 234, 0.4);">
+            </div>
+            <div class="layui-input-block" style="position: absolute;left: 650px;top: 0px;">
+              <input id="btn2" type="submit" value="查找" class="layui-btn"
+                style="width: 100px;text-align: center;background-color: rgba(118, 188, 209,0.4)">
+            </div>
+
+            <table class="layui-table" style="text-align: center;background-color: rgba(255, 253, 253, 0.8);">
+              <!-- <colgroup>
+                  <col width="80">
+                  <col width="80">
+                  <col width="80">
+                  <col>
+                </colgroup> -->
+              <thead>
+                <tr>
+                  <th style="text-align: center;font-size: 16px;">ID</th>
+                  <th style="text-align: center;font-size: 16px;">姓名</th>
+                  <th style="text-align: center;font-size: 16px;">性别</th>
+                  <th style="text-align: center;font-size: 16px;">年龄</th>
+                  <th style="text-align: center;font-size: 16px;">入狱时间</th>
+                  <th style="text-align: center;font-size: 16px;">服刑期限</th>
+                  <th style="text-align: center;font-size: 16px;">刑罚种类</th>
+                </tr>
+              </thead>
+              <tbody id="t1"></tbody>
+            </table>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;">
+    <!-- 底部固定区域 -->
+    Copy Right @xincl7@163.com
+  </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+      var element = layui.element;
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+      //设置监听进入后台
+      $('#check').on('click', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == '3') {
+              window.location.href = '../page/backstage.html';
+            } else if (obj.code == '2') {
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+    });
+  </script>>
+</body>
+
+</html>

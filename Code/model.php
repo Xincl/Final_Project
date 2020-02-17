@@ -1,0 +1,10 @@
+<?php
+	header('Content-type:text/html;charset=utf-8');
+	//连接初始化
+$userName='root';
+$passWord='123qwe';
+$host='localhost:3306';
+$dataBase='message';
+//创建连接
+$conn=mysqli_connect($host,$userName,$passWord,$dataBase);
+?>

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>服刑人员劳动报酬管理系统登陆界面</title>
+<script src="../layui.js"></script>
+<link rel="stylesheet" href="../css/layui.css">
+<script src="../jquery-3.4.1.js"></script>
+</head>
+<script>
+    
+</script>
+<body>
+    <div style="font-size: 15px;width: 913px;">
+        <div class="layui-input-block"
+          style="margin-right: 25px;margin-left: 13%;background-color: white;width: 913px;">
+          <table class="layui-hide" id="test" lay-filter="test"></table>
+        </div>
+        <script type="text/html" id="toolbarDemo">
+
+        <div class="layui-input-block" style="position: absolute;left: -90px;top:9px">
+            <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
+        </div>  
+        <div class="layui-input-block" lay-event="getsearch" style="position: absolute;left: 220px;top: 9px;">
+            <button id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</button>
+        </div > 
+        
+        <div class="layui-btn-container" style="position:absolute;left:440px">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        </div>
+       </script>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="reason">申请请假</a>
+        </script>
+
+        <script>
+          layui.use('table', function () {
+            var table = layui.table;
+
+            table.render({
+              elem: '#test'
+              , url: '../BCode/showhistory.php'
+              , id: 't'
+              , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+              , defaultToolbar: ['filter', 'exports', 'print']
+              , title: '服刑人员劳动记录表'
+              , width: 913
+              , height: 505
+              , cols: [[
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'FID', title: 'ID', width: 110, fixed: 'left', unresize: false, sort: true }
+                , { field: 'FName', title: '姓名', width: 110, }
+                , { field: 'FWorkTime', title: '工作时间', width: 180, sort: true }
+                , { field: 'FSalary', title: '劳动报酬', width: 180, sort: true }
+                , { field: 'FChangeTime', title: '操作时间', width: 140, sort: true }
+                , { field: 'FOperate', title: '操作人', width: 120, sort: true }
+              ]]
+              , page: true
+              , limit: 10
+            });
+
+            //头工具栏事件
+            table.on('toolbar(test)', function (obj) {
+              var checkStatus = table.checkStatus(obj.config.id);
+              switch (obj.event) {
+                case 'getCheckLength':
+                  var data = checkStatus.data;
+                  layer.msg('选中了：' + data.length + ' 个');
+                  break;
+                  var data = checkStatus.data;
+                  layer.msg('选中了：' + data.length + ' 个');
+                  break;
+                case 'getsearch':
+                  var search = document.getElementById("search").value;
+                  console.log(obj);
+                  table.reload('t', {
+                    method: 'POST'
+                    , where: {
+                      FID: search,
+                      FName: search
+                    }
+                    , page: {
+                      curr: 1 //重新从第 1 页开始
+                    }
+                  });
+
+                  break;
+              };
+            });
+
+
+          });
+        </script>
+        
+      </div>
+
+</body>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html" ">注册登记</a></dd>
+            <dd><a href=" ../page/query.html">信息查询</a></dd>管理员
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html" >服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html" >服刑人员工作记录</a></li>
+          <li class="layui-nav-item"><a href="../page/backstage.html" style="background-color:grey;">后台管理</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+          <li class="layui-this">后台首页</li>
+          <li>服刑人员信息修改历史</li>
+          <li>管理人员信息查询</li>
+          <li>管理人员信息修改历史</li>
+          <li>管理人员注册</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+          <div class="layui-tab-item layui-show">
+          </div>
+          <div class="layui-tab-item">
+            <iframe frameborder="no" src="../BPage/bpchange.html " style="width: 100%;height: 525px;"></iframe>
+          </div>
+          <div class="layui-tab-item">
+            <iframe frameborder="no" src="../BPage/bshowmanager.html " style="width: 100%;height: 525px;"></iframe>
+          </div>
+          <div class="layui-tab-item">
+            <iframe frameborder="no" src="../BPage/bchange.html" style="width: 100%;height: 525px;"></iframe>
+          </div>
+          <div class="layui-tab-item">
+            <iframe frameborder="no" src="../BPage/bmregister.html" style="width: 100%;height: 525px;"></iframe>
+          </div>
+        </div>
+      </div> 
+
+
+    </div>
+
+
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+      <!-- 底部固定区域 -->
+      Copy Right @xincl7@163.com
+    </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+      var element = layui.element;
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      })
+
+    });
+  </script>
+</body>
+
+</html>

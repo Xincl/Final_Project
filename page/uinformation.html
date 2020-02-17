@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>服刑人员劳动报酬管理系统</title>
+    <script src="../layui.js"></script>
+    <link rel="stylesheet" href="../css/layui.css">
+    <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                        管理员
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="../page/uinformation.html">基本资料</a></dd>
+                        <dd><a href="../page/secure.html">安全设置</a></dd>
+                        <dd id="check"><a>进入后台</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;" style="background-color:grey;">服刑人员信息管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="../page/register.html">注册登记</a></dd>
+                            <dd><a href="../page/query.html">信息查询</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+                    <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;font-size: 15px;">
+                <div class="layui-input-block"
+                    style="margin-right: 25px;margin-left: 65px;color: white;text-align: center;margin-top: 8%;">
+                    <h2>使用者资料修改</h2>
+                </div>
+                <div class="layui-input-block" style="margin-left: 30%;margin-top:7%;">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                </div>
+            </div>
+
+            <script>
+                layui.use('table', function () {
+                    var table = layui.table;
+
+                    table.render({
+                        elem: '#test'
+                        , url: '../Code/showManager.php'
+                        , id: 't'
+                        , title: '个人资料'
+                        , width: 485
+                        , height: 80
+                        , cols: [[
+                            { type: 'checkbox', fixed: 'left' }
+                            , { field: 'ID', title: 'ID', width: 100, fixed: 'left', unresize: false }
+                            , { field: 'Name', title: '姓名', width: 110 }
+                            , { field: 'PhoneNum', title: '手机号', width: 110, edit: 'text', }
+                            , { field: 'Email', title: '邮箱', width: 110, edit: 'text' }
+                        ]]
+                    });
+                });
+
+                //工具类——日期方法
+                Date.prototype.Format = function (fmt) { // author: meizz
+                    var o = {
+                        "M+": this.getMonth() + 1, // 月份
+                        "d+": this.getDate(), // 日
+                        "h+": this.getHours(), // 小时
+                        "m+": this.getMinutes(), // 分
+                        "s+": this.getSeconds(), // 秒
+                        "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                        "S": this.getMilliseconds() // 毫秒
+                    };
+                    if (/(y+)/.test(fmt))
+                        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                    for (var k in o)
+                        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                    return fmt;
+                }
+            </script>
+            <script>
+                layui.use('table', function () {
+                    var table = layui.table;
+
+                    //监听单元格编辑
+                    table.on('edit(test)', function (obj) {
+                        var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+                        var value = obj.value //得到修改后的值
+                            , data = obj.data //得到所在行所有键值
+                            , field = obj.field; //得到字段
+                        console.log(value);
+                        console.log(data);
+                        $.ajax({
+                            method: "POST",
+                            url: "../Code/managerC.php",
+                            data: {
+                                value: value,
+                                data: data,
+                                field: field,
+                                time: time
+                            },
+                            success: function (result) {
+                                var o = JSON.parse(result);
+                                if (o.code == '1') {
+                                    layer.msg(o.message, { icon: 2 });
+                                } else if (o.code == '3') {
+                                    layer.msg(o.message, { icon: 1 });
+                                }
+                            },
+                            error: function (result) {
+
+                            }
+
+                        })
+                    });
+                });
+            </script>
+
+
+            <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+                <!-- 底部固定区域 -->
+                Copy Right @xincl7@163.com
+            </div>
+        </div>
+
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function () {
+                var element = layui.element;
+                $(document).on('click', 'li.exit', function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "../Code/exit.php",
+                        data: {},
+                        success: function (result) {
+
+                        },
+                        error: function (result) {
+
+                        }
+                    })
+                })
+
+
+                //设置监听进入后台
+                $('#check').on('click', function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "../Code/check.php",
+                        data: {},
+                        success: function (result) {
+                            var obj = JSON.parse(result);
+                            if (obj.code == '3') {
+                                window.location.href = '../page/backstage.html';
+                            } else if (obj.code == '2') {
+                                alert("无权限登陆后台");
+                                window.location.href = '../page/Home.html';
+                            }
+
+                        },
+                        error: function (result) {
+
+                        }
+                    })
+                });
+            })
+        </script>
+</body>
+
+</html>

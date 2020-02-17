@@ -1,0 +1,204 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>服刑人员劳动报酬管理系统登陆界面</title>
+    <script src="../layui.js"></script>
+    <link rel="stylesheet" href="../css/layui.css">
+    <script src="../jquery-3.4.1.js"></script>
+</head>
+<script>
+
+</script>
+
+<body>
+    <div style="font-size: 15px;width: 913px;">
+        <div class="layui-input-block"
+            style="margin-right: 25px;margin-left: 65px;margin-top: 30px;color: white;text-align: center;">
+            <h2 style="font-size: 30px;">管理人员登记注册</h2>
+        </div>
+        <div style="margin-top: 20px;margin-left: 32%;padding: 20px;width: 400px;height: 390px;;border-radius: 4px;box-shadow: 5px 5px 20px #444444"">
+    <form class=" layui-form" action="../Code/register.php" method="post" lay-filter="example" name="register">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">ID</label>
+                <div class="layui-input-block" style="width:230px">
+                    <input type="id" name="id" lay-verify="id" autocomplete="off" placeholder="注册年月日+随机数字"
+                        class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">姓名</label>
+                <div class="layui-input-block" style="width:230px">
+                    <input type="name" name="name" placeholder="请输入姓名" autocomplete="off" class="layui-input"
+                        lay-verify="name">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">密码</label>
+                <div class="layui-input-block" style="width:230px">
+                    <input type="password" name="password" placeholder="请输入原始密码" autocomplete="off" class="layui-input"
+                        lay-verify="pwd">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">手机号码</label>
+                <div class="layui-input-block" style="width:230px">
+                    <input type="phoneNum" name="phoneNum" placeholder="请输入手机号码" autocomplete="off" class="layui-input"
+                        lay-verify="phone">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">邮箱</label>
+                <div class="layui-input-block" style="width:230px">
+                    <input type="email" name="email" id="email" placeholder="请输入邮箱" autocomplete="off"
+                        class="layui-input" lay-verify="email">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="font-size: 20px;">是否超级管理员</label>
+                <div class="layui-input-block" style="margin-left: 150px;">
+                    <input type="checkbox" name="allow" lay-skin="switch" lay-text="是|否">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn layui-btn-normal"
+                        id="LAY-component-form-getval">确认信息</button>
+                    <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">立即注册</button>
+                </div>
+            </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        //JavaScript代码区域
+        layui.use(['element', 'form', 'layedit', 'laydate'], function () {
+            var element = layui.element;
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+            form.render();
+
+
+            //表单取值
+            layui.$('#LAY-component-form-getval').on('click', function () {
+                var data = form.val('example');
+                layer.msg(JSON.stringify(data));
+            });
+
+            //工具类——日期方法
+            Date.prototype.Format = function (fmt) { // author: meizz
+              var o = {
+                "M+": this.getMonth() + 1, // 月份
+                "d+": this.getDate(), // 日
+                "h+": this.getHours(), // 小时
+                "m+": this.getMinutes(), // 分
+                "s+": this.getSeconds(), // 秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+                "S": this.getMilliseconds() // 毫秒
+              };
+              if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+              for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+              return fmt;
+            }
+
+            //提交数据
+            form.on('submit(demo1)', function (data) {
+                console.log(JSON.stringify(data.field));
+                // layer.alert(JSON.stringify(data.field), {
+                //   title: '最终的提交信息'
+                // })
+                var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+                console.log(time);
+                $.ajax({
+                    method: "POST",
+                    url: "../BCode/mregister.php",
+                    data: {
+                        d: JSON.stringify(data.field),
+                        time: time
+
+                    },
+                    success: function (result) {
+                        var obj = JSON.parse(result);
+                        if (obj.code == 1) {
+                            layer.msg(obj.message, { icon: 2 });
+                        } else if (obj.code == 2) {
+                            layer.msg(obj.message, { icon: 2 });
+                        } else if (obj.code == 3) {
+                            layer.msg(obj.message, { icon: 1 });
+                        }
+                    },
+                    error: function (msg) {
+                        alert(msg);
+                    }
+                })
+                return false;
+            });
+            //退出设置
+            $(document).on('click', 'li.exit', function () {
+                $.ajax({
+                    method: "POST",
+                    url: "../Code/exit.php",
+                    data: {},
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+
+                    }
+                })
+            })
+
+
+
+            //自定义验证规则
+            form.verify({
+                id: function (value) {
+                    if ((value.length > 9) && (value.length <7)) {
+                        return 'ID长度不得大于9,小于7';
+                    }
+                }
+                , id: [
+                    /^[0-9]*$/
+                    , 'ID只能输入数字'
+                ]
+                , name: function (value) {
+                    if (value.length == 0) {
+                        return '姓名为空，必填';
+                    }
+                }
+                , pwd: function (value) {
+                    if (value.length < 6) {
+                        return '密码长度不得小于六位';
+                    } else if (value.length > 10) {
+                        return '密码长度不得大于十位';
+                    }
+                }
+                , phone: [
+                    /^1[3456789]\d{9}$/
+                    , '手机号码输入错误'
+                ]
+                , email: [
+                    /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+                    , '邮箱输入错误'
+                ]
+            });
+
+        });
+    </script>
+
+</body>

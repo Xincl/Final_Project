@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">管理员
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id ="check"><a href="../page/backstage.html">进入后台</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item" style="background-color:grey;"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html">注册登记</a></dd>
+              <dd><a href="../page/query.html">信息查询</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;font-size: 25px;color: rgb(0, 0, 0);">使用说明</div>
+      <div style="padding: 15px;font-size:20px;color: rgb(0, 0, 0);">本系统主要功能用于服刑人员的劳动报酬的申请，同时也有附加功能，比如服刑人员的注册登记，信息管理等
+      </div>
+      <hr>
+      <div style="padding: 15px;font-size: 25px;color: rgb(0, 0, 0);">注意事项</div>
+      <div style="padding: 15px;font-size:20px;color: rgb(255, 255, 255);">
+        1.使用该系统进行操作的时候，对于数据修改需要十分慎重，这将对服刑人员的合法权益保障十分关键，如果胡乱篡改数据，将对操作人进行法律追究</div>
+      <div style="padding: 15px;font-size:20px;color: rgb(255, 255, 255);">
+        2.该系统只配给给监狱管理人员使用，不得将账号密码外泄，如果导致外泄导致经济损失，将对当事人进行法律追究</div>
+      <div style="padding: 15px;font-size:20px;color: rgb(255, 255, 255);">3.该系统所有技术最终解释权归于系统开发人员</div>
+      <div style="padding: 15px;font-size:20px;color: rgb(255, 255, 255);">4.服刑人员劳动报酬根据地方制定，本系统报酬为每分钟0.05元</div>
+    </div>
+
+
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;">
+      <!-- 底部固定区域 -->
+      Copy Right @xincl7@163.com
+    </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+      var element = layui.element;
+
+      //设置退出按钮监听
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+      //设置监听进入后台
+      $('#check').on('click',function(){
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if(obj.code == '3'){
+              window.location.href = '../page/backstage.html';
+            }else if(obj.code == '2'){
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id="check"><a>进入后台</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html" ">注册登记</a></dd>
+            <dd><a href=" ../page/query.html">信息查询</a></dd>管理员
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html" style="background-color:grey;">服刑人员工作记录</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;font-size: 15px;width: 892px;">
+        <div class="layui-input-block" style="margin-right: 25px;margin-left:35%;color: white;text-align: center;">
+          <h2>服刑人员工作记录</h2>
+        </div>
+        <div class="layui-input-block"
+          style="margin-right: 25px;margin-left: 13%;background-color: white;width: 892px;">
+          <table class="layui-hide" id="test" lay-filter="test"></table>
+        </div>
+        <script type="text/html" id="toolbarDemo">
+
+        <div class="layui-input-block" style="position: absolute;left: -90px;top:9px">
+            <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
+        </div>  
+        <div class="layui-input-block" lay-event="getsearch" style="position: absolute;left: 220px;top: 9px;">
+            <button id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</button>
+        </div > 
+        
+        <div class="layui-btn-container" style="position:absolute;left:440px">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        </div>
+       </script>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="reason">申请请假</a>
+        </script>
+
+        <script>
+          layui.use('table', function () {
+            var table = layui.table;
+
+            table.render({
+              elem: '#test'
+              , url: '../Code/showwork.php'
+              , id: 't'
+              , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+              , defaultToolbar: ['filter', 'exports', 'print']
+              , title: '服刑人员劳动记录表'
+              , width: 892
+              , height: 505
+              , cols: [[
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'FID', title: 'ID', width: 140, fixed: 'left', unresize: false, sort: true }
+                , { field: 'FName', title: '姓名', width: 140, }
+                , { field: 'FWorkStart', title: '开始工作时间', width: 200, sort: true }
+                , { field: 'FWorkEnd', title: '结束工作时间', width: 200, sort: true }
+                , { field: 'FReason', title: '请假理由', width: 140, sort: true }
+              ]]
+              , page: true
+              , limit: 10
+            });
+
+            //头工具栏事件
+            table.on('toolbar(test)', function (obj) {
+              var checkStatus = table.checkStatus(obj.config.id);
+              switch (obj.event) {
+                case 'getCheckLength':
+                  var data = checkStatus.data;
+                  layer.msg('选中了：' + data.length + ' 个');
+                  break;
+                  var data = checkStatus.data;
+                  layer.msg('选中了：' + data.length + ' 个');
+                  break;
+                case 'getsearch':
+                  var search = document.getElementById("search").value;
+                  console.log(obj);
+                  table.reload('t', {
+                    method: 'POST'
+                    , where: {
+                      FID: search,
+                      FName: search
+                    }
+                    , page: {
+                      curr: 1 //重新从第 1 页开始
+                    }
+                  });
+
+                  break;
+              };
+            });
+
+
+          });
+        </script>
+
+      </div>
+
+    </div>
+
+
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+      <!-- 底部固定区域 -->
+      Copy Right @xincl7@163.com
+    </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+      var element = layui.element;
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      })
+
+
+      //设置监听进入后台
+      $('#check').on('click', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == '3') {
+              window.location.href = '../page/backstage.html';
+            } else if (obj.code == '2') {
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+    });
+  </script>
+</body>
+
+</html>

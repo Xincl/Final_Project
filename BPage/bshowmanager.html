@@ -1,0 +1,214 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>服刑人员劳动报酬管理系统登陆界面</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body>
+  <div style="padding: 15px;font-size: 15px;width: 1000px;">
+    <div class="layui-input-block"
+      style="margin-right: 25px;margin-left: 5%;margin-top: -2%;background-color: white;width: 995px;height: 500px;">
+      <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+    <script type="text/html" id="toolbarDemo">
+
+        <div class="layui-input-block" style="position: absolute;left: -90px;top:9px">
+            <input type="search" name="search" id="search" placeholder="输入ID/姓名进行搜索" autocomplete="on" class="layui-input" style="height:33px;width:300px;" >
+        </div>  
+        <div class="layui-input-block" lay-event="getsearch" style="position: absolute;left: 220px;top: 9px;">
+            <button id="do_search" data-type="reload" value="查找" class="layui-btn layui-btn-sm in" lay-event="getsearch" style="width: 100px;text-align: center;">搜索</button>
+        </div > 
+        
+        <div class="layui-btn-container" style="position:absolute;left:440px">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        </div>
+        
+       </script>
+    <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="super">提升/降低权限</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除账户</a>
+        </script>
+
+    <script>
+      layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+          elem: '#test'
+          , url: '../BCode/showallmanager.php'
+          , id: 't'
+          , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+          , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+            title: '提示'
+            , layEvent: 'LAYTABLE_TIPS'
+            , icon: 'layui-icon-tips'
+          }]
+          , title: '服刑人员劳动报酬表'
+          , width: 995
+          , height: 500
+          , cols: [[
+            { type: 'checkbox', fixed: 'left' }
+            , { field: 'ID', title: 'ID', width: 80, fixed: 'left', unresize: false, sort: true }
+            , { field: 'Name', title: '姓名', width: 90, edit: 'text' }
+            , { field: 'PassWord', title: '账户密码', width: 110, sort: true, edit: 'text' }
+            , { field: 'PhoneNum', title: '手机号', width: 120, sort: true, edit: 'text' }
+            , { field: 'Email', title: '邮箱', width: 140, sort: true, edit: 'text' }
+            , { field: 'Login', title: '登陆状态', width: 80, sort: true, }
+            , { field: 'Super', title: '身份权限', width: 110, sort: true, }
+            , { fixed: 'right', title: '权限操作', toolbar: '#barDemo', width: 190 }
+          ]]
+          , page: true
+          , limit: 10
+        });
+
+        //工具类——日期方法
+        Date.prototype.Format = function (fmt) { // author: meizz
+          var o = {
+            "M+": this.getMonth() + 1, // 月份
+            "d+": this.getDate(), // 日
+            "h+": this.getHours(), // 小时
+            "m+": this.getMinutes(), // 分
+            "s+": this.getSeconds(), // 秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+            "S": this.getMilliseconds() // 毫秒
+          };
+          if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+          for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+          return fmt;
+        }
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+          var checkStatus = table.checkStatus(obj.config.id);
+          switch (obj.event) {
+            case 'getCheckLength':
+              var data = checkStatus.data;
+              layer.msg('选中了：' + data.length + ' 个');
+              break;
+              var data = checkStatus.data;
+              layer.msg('选中了：' + data.length + ' 个');
+              break;
+            case 'getsearch':
+              var search = document.getElementById("search").value;
+              console.log(obj);
+              table.reload('t', {
+                method: 'POST'
+                , where: {
+                  FID: search,
+                  FName: search
+                }
+                , page: {
+                  curr: 1 //重新从第 1 页开始
+                }
+              });
+
+              break;
+            //自定义头工具栏右侧图标 - 提示   
+            case 'LAYTABLE_TIPS':
+              layer.msg('详细说明请阅读使用文档');
+              break;
+          };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+          var data = obj.data;
+          console.log(data);
+          if (obj.event === 'super') {
+            var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+            layer.confirm('真的对其权限进行操作吗？', function (index) {
+              $.ajax({
+                method: "POST",
+                url: "../BCode/super.php",
+                data: {
+                  data,
+                  time2,
+                },
+                success: function (result) {
+                  var mes = JSON.parse(result);
+                  if (mes.code == 2) {
+                    layer.msg(mes.message, { icon: 2 });
+                  } else if (mes.code == 3) {
+                    layer.msg(mes.message, { icon: 1 });
+                  }
+                },
+                error: function (msg) {
+                  alert(result);
+                }
+              });
+              layer.close(index);
+            });
+          } else if (obj.event === 'del') {
+            var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+            layer.confirm('真的删除账户么', function (index) {
+              obj.del();
+              layer.close(index);
+              $.ajax({
+                method: "POST",
+                url: "../BCode/tableDelete.php",
+                data: {
+                  data,
+                  time2
+                },
+                success: function (result) {
+                  var mes = JSON.parse(result);
+                  layer.msg(mes.message, { icon: 1 });
+                },
+                error: function (msg) {
+                  alert(result);
+                }
+              })
+            });
+          }
+        });
+
+
+      });
+    </script>
+    <script>
+      layui.use('table', function () {
+        var table = layui.table;
+        //监听单元格编辑
+        table.on('edit(test)', function (obj) {
+          var time2 = new Date().Format("yyyy-MM-dd hh:mm:ss");
+          var value = obj.value //得到修改后的值
+            , data = obj.data //得到所在行所有键值
+            , field = obj.field; //得到字段
+          console.log(value);
+          console.log(data);
+          $.ajax({
+            method: "POST",
+            url: "../BCode/managerchange.php",
+            data: {
+              value: value,
+              data: data,
+              field: field,
+              time2: time2
+            },
+            success: function (result) {
+              var o = JSON.parse(result);
+              if (o.code == '1') {
+                layer.msg(o.message, { icon: 2 });
+              } else if (o.code == '3') {
+                layer.msg(o.message, { icon: 1 });
+              }
+            },
+            error: function (result) {
+
+            }
+
+          })
+        });
+      });
+    </script>
+  </div>
+
+</body>

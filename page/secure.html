@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>服刑人员劳动报酬管理系统</title>
+  <script src="../layui.js"></script>
+  <link rel="stylesheet" href="../css/layui.css">
+  <script src="../jquery-3.4.1.js"></script>
+</head>
+
+<body class="layui-layout-body" style="background-image: url('../images/test2.jpg');">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo" style="color: white;">服刑人员劳动报酬管理系统</div>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../page/uinformation.html">基本资料</a></dd>
+            <dd><a href="../page/secure.html">安全设置</a></dd>
+            <dd id="check"><a>进入后台</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item exit"><a href="../page/login.html">退出</a></li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <li class="layui-nav-item"><a href="../page/Home.html">首页</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;" style="background-color:grey;">服刑人员信息管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="../page/register.html">注册登记</a></dd>
+              <dd><a href="../page/query.html">信息查询</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="../page/salary.html">服刑人员报酬管理</a></li>
+          <li class="layui-nav-item"><a href="../page/work_history.html">服刑人员工作记录</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div class="layui-input-block"
+        style="margin-right: 25px;margin-left: 65px;margin-top: 7%;color: white;text-align: center;">
+        <h2 style="font-size: 30px;">使用者资料修改</h2>
+      </div>
+      <div
+        style="margin-top: 20px;margin-left: 32%;padding: 20px;width: 400px;height: 250px;;border-radius: 4px;box-shadow: 5px 5px 20px #444444"">
+              <form class=" layui-form" action="../Code/secure.php" method="post" lay-filter="example" name="register">
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">旧 密 码</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="password" name="passwordOld" lay-verify="passwordOld" autocomplete="off" placeholder="请输入旧密码"
+              autocomplete="off" lay-verify="pwd" class="layui-input" style="background: none;font-style: #FFF;">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">新 密 码</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="password" name="passwordNew" placeholder="请输入新密码" autocomplete="off" class="layui-input"
+              autocomplete="off" lay-verify="pwd" style="background: none;font-style: #FFF;">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="font-size: 20px;">确认密码</label>
+          <div class="layui-input-block" style="width:230px">
+            <input type="password" name="password" placeholder="请再次确认密码" autocomplete="off" class="layui-input"
+              autocomplete="off" lay-verify="pwd" style="background: none;font-style: #FFF;">
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn layui-btn-fluid" id="LAY-component-form-getval" lay-submit=""
+              lay-filter="demo1" style="margin-left:-19%;margin-top: 1%;">确认修改</button>
+            <button type="button" class="layui-btn layui-btn-fluid"
+              style="margin-left: -19%;margin-top: 3%;">重置输入</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+
+
+    <div class="layui-footer" style="background: rgba(0,0,0,0);text-align: right;height: 35px;">
+      <!-- 底部固定区域 -->
+      Copy Right @xincl7@163.com
+    </div>
+  </div>
+
+  <script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'layedit'], function () {
+      var element = layui.element;
+      var form = layui.form
+        , layer = layui.layer
+        , layedit = layui.layedit
+      form.render();
+
+
+      Date.prototype.Format = function (fmt) { // author: meizz
+        var o = {
+          "M+": this.getMonth() + 1, // 月份
+          "d+": this.getDate(), // 日
+          "h+": this.getHours(), // 小时
+          "m+": this.getMinutes(), // 分
+          "s+": this.getSeconds(), // 秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+          "S": this.getMilliseconds() // 毫秒
+        };
+        if (/(y+)/.test(fmt))
+          fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+      }
+
+      //提交数据
+      form.on('submit(demo1)', function (data) {
+        console.log(JSON.stringify(data.field));
+        // layer.alert(JSON.stringify(data.field), {
+        //   title: '最终的提交信息'
+        // })
+        var time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+        console.log(time);
+        $.ajax({
+          method: "POST",
+          url: "../Code/secure.php",
+          data: {
+            d: JSON.stringify(data.field),
+            time: time
+
+          },
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == 1) {
+              layer.msg(obj.message, { icon: 2 });
+            } else if (obj.code == 2) {
+              layer.msg(obj.message, { icon: 2 });
+            } else if (obj.code == 3) {
+              layer.msg(obj.message, { icon: 2 });
+            } else if (obj.code == 4) {
+              layer.msg(obj.message, { icon: 2 });
+            }
+            else if (obj.code == 5) {
+              layer.msg(obj.message, { icon: 1 });
+            }
+          },
+          error: function (msg) {
+            alert(msg);
+          }
+        })
+        return false;
+      });
+
+      //自定义验证规则
+      form.verify({
+        pwd: function (value) {
+          if (value.length < 6) {
+            return '密码长度不得小于六位';
+          } else if (value.length > 10) {
+            return '密码长度不得大于十位';
+          }
+        }
+      });
+
+      //退出设置
+      $(document).on('click', 'li.exit', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/exit.php",
+          data: {},
+          success: function (result) {
+
+          },
+          error: function (result) {
+
+          }
+        })
+      })
+
+
+      //设置监听进入后台
+      $('#check').on('click', function () {
+        $.ajax({
+          method: "POST",
+          url: "../Code/check.php",
+          data: {},
+          success: function (result) {
+            var obj = JSON.parse(result);
+            if (obj.code == '3') {
+              window.location.href = '../page/backstage.html';
+            } else if (obj.code == '2') {
+              alert("无权限登陆后台");
+              window.location.href = '../page/Home.html';
+            }
+
+          },
+          error: function (result) {
+
+          }
+        })
+      });
+
+    });
+
+
+  </script>
+</body>
+
+</html>

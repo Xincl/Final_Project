@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>服刑人员劳动报酬管理系统登陆界面</title>
+<script src="../layui.js"></script>
+<link rel="stylesheet" href="../css/layui.css">
+</head>
+<script>
+    //输入框
+     function InputCheck(){
+         if(Login.username.value == ""){
+             alert("请输入工号/姓名登陆");
+             Login.username.focus();
+             return(false);
+         }
+         if(Login.password.value == ""){
+             alert("请输入密码");
+             Login.password.focus();
+             return(flase);
+         }
+     }
+    //退出按钮
+     function exit_system(){
+        if(confirm("您确定要关闭本页吗？")){
+            window.location.href="about:blank";
+            window.close();
+        }
+        else{
+        }
+     }
+</script>
+<body background="../images/test2.jpg" >
+    <div style="position: absolute;left: 50%; top: 50%;width: 400px; margin-left:-180px; margin-top: -200px;">
+        <div style="background: rgba(0,0,0,0); padding: 30px;border-radius: 4px;box-shadow: 5px 5px 20px #444444" >
+            <div class="layui-form">
+                <form action="../Code/Login.php" method="post" name="Login" onsubmit="return InputCheck()">  
+                    <div class="layui-form-item" style="color: white;margin:0 auto;text-align: center;">
+                        <h2>服刑人员劳动报酬管理系统</h2>
+                    </div>
+                    <hr>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="font-size:17px; color: #FFF;;" >用    户</label>
+                        <div class="layui-input-block" style="margin-right: 25px;margin-left: 110px;" >
+                            <input type="text" name="username" id="username" placeholder="输入工号/姓名" autocomplete="off" class="layui-input" style="background: none;font-style: #FFF;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="font-size:17px; color: #FFF;">密    码</label>
+                        <div class="layui-input-block" style="margin-right: 25px;margin-left: 110px;">
+                            <input type="password" name="password" id="password" placeholder="输入密码" autocomplete="off" class="layui-input" style="background: none;font-style: #FFF;">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block" style="margin-right: 25px;margin-left: 40px;">
+                            <input type="submit" value="登录" class="layui-btn layui-btn-fluid" >
+                        </div>  
+                    </div>
+                    <div class="layui-form-item" >
+                        <div class="layui-input-block" style="margin-right: 25px;margin-left: 40px;">
+                            <input type="button" value="退出" class="layui-btn layui-btn-fluid" name="close" onclick="exit_system()">
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
